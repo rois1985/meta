@@ -30,7 +30,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'idmeta-secret-key-change-in-produc
 const JWT_EXPIRES_IN = '7d';
 
 // Email transporter setup
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
