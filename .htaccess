@@ -1,0 +1,16 @@
+# Force all requests through Node.js proxy
+<IfModule mod_mime.c>
+  AddType application/javascript .js .mjs
+  AddType text/css .css
+  AddType image/svg+xml .svg
+  AddType application/json .json
+</IfModule>
+
+# Disable Apache's static file serving for assets
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Force .js files to be served with correct MIME type
+  RewriteRule ^assets/(.+)\.js$ - [T=application/javascript,L]
+  RewriteRule ^assets/(.+)\.css$ - [T=text/css,L]
+</IfModule>

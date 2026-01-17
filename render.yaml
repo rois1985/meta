@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: idmeta
+    runtime: node
+    buildCommand: npm install && npm run build:local
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production

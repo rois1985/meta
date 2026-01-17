@@ -1,0 +1,104 @@
+{
+  "lastUpdate": "2026-01-17T16:06:41.407Z",
+  "notifications": [
+    {
+      "id": "notif_1768665998907_ftc",
+      "type": "Law Change",
+      "priority": "High",
+      "title": "FTC Policy Update Detected",
+      "description": "New updates detected from FTC. Review for compliance impact.",
+      "timestamp": "2026-01-17T16:06:38.907Z",
+      "read": false,
+      "authority": "FTC",
+      "category": "Advertising",
+      "url": "https://www.ftc.gov/news-events/news/press-releases"
+    },
+    {
+      "id": "notif_1768665999124_fca_uk",
+      "type": "Law Change",
+      "priority": "High",
+      "title": "FCA UK Policy Update Detected",
+      "description": "New updates detected from FCA UK. Review for compliance impact.",
+      "timestamp": "2026-01-17T16:06:39.124Z",
+      "read": false,
+      "authority": "FCA UK",
+      "category": "Financial",
+      "url": "https://www.fca.org.uk/news"
+    },
+    {
+      "id": "notif_1768666000063_google_ads",
+      "type": "Law Change",
+      "priority": "High",
+      "title": "Google Ads Policy Update Detected",
+      "description": "New updates detected from Google Ads. Review for compliance impact.",
+      "timestamp": "2026-01-17T16:06:40.063Z",
+      "read": false,
+      "authority": "Google Ads",
+      "category": "Platform Policy",
+      "url": "https://support.google.com/adspolicy/answer/6008942"
+    },
+    {
+      "id": "notif_1768666001406_meta_ads",
+      "type": "Law Change",
+      "priority": "High",
+      "title": "Meta Ads Policy Update Detected",
+      "description": "New updates detected from Meta Ads. Review for compliance impact.",
+      "timestamp": "2026-01-17T16:06:41.406Z",
+      "read": false,
+      "authority": "Meta Ads",
+      "category": "Platform Policy",
+      "url": "https://transparency.fb.com/policies/ad-standards/"
+    }
+  ],
+  "updates": [
+    {
+      "source": "fda",
+      "name": "FDA",
+      "category": "Healthcare",
+      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds",
+      "lastChecked": "2026-01-17T16:06:37.404Z",
+      "status": "error",
+      "error": "Request failed with status code 404"
+    },
+    {
+      "source": "ftc",
+      "name": "FTC",
+      "category": "Advertising",
+      "url": "https://www.ftc.gov/news-events/news/press-releases",
+      "title": "Press Releases | Federal Trade Commission",
+      "lastChecked": "2026-01-17T16:06:38.907Z",
+      "lastModified": "Sat, 17 Jan 2026 16:04:25 GMT",
+      "status": "success"
+    },
+    {
+      "source": "fca_uk",
+      "name": "FCA UK",
+      "category": "Financial",
+      "url": "https://www.fca.org.uk/news",
+      "title": "News | FCA",
+      "lastChecked": "2026-01-17T16:06:39.124Z",
+      "lastModified": "Sat, 17 Jan 2026 15:42:21 GMT",
+      "status": "success"
+    },
+    {
+      "source": "google_ads",
+      "name": "Google Ads",
+      "category": "Platform Policy",
+      "url": "https://support.google.com/adspolicy/answer/6008942",
+      "title": "Google Ads policies - Advertising Policies Help",
+      "lastChecked": "2026-01-17T16:06:40.063Z",
+      "lastModified": "2026-01-17T16:06:40.063Z",
+      "status": "success"
+    },
+    {
+      "source": "meta_ads",
+      "name": "Meta Ads",
+      "category": "Platform Policy",
+      "url": "https://transparency.fb.com/policies/ad-standards/",
+      "title": "Introduction to the Advertising Standards | Transparency Center",
+      "lastChecked": "2026-01-17T16:06:41.406Z",
+      "lastModified": "2026-01-17T16:06:41.406Z",
+      "status": "success"
+    }
+  ]
+}
