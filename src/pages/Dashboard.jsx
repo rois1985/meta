@@ -121,6 +121,11 @@ export function Dashboard() {
   const fetchNotifications = async () => {
     try {
       const response = await fetch('/api/notifications');
+      if (response.status === 401) {
+        // Not authenticated, redirect to login
+        window.location.href = '/login';
+        return;
+      }
       const data = await response.json();
       if (data.success && data.notifications && data.notifications.length > 0) {
         setNotifications(data.notifications);
@@ -817,6 +822,10 @@ export function Dashboard() {
                   setIsCheckingUpdates(true);
                   try {
                     const response = await fetch('/api/check-updates', { method: 'POST' });
+                    if (response.status === 401) {
+                      window.location.href = '/login';
+                      return;
+                    }
                     const data = await response.json();
                     console.log('Update check result:', data);
                     await fetchNotifications();

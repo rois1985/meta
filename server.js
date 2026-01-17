@@ -20,12 +20,53 @@ const jwt = require('jsonwebtoken');
 console.log('jsonwebtoken loaded');
 const cookieParser = require('cookie-parser');
 console.log('All dependencies loaded successfully');
+const nodemailer = require('nodemailer');
+console.log('nodemailer loaded');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 console.log('Will use port:', PORT);
 const JWT_SECRET = process.env.JWT_SECRET || 'idmeta-secret-key-change-in-production-2024';
 const JWT_EXPIRES_IN = '7d';
+
+// Email transporter setup
+const transporter = nodemailer.createTransporter({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+// Send email notification
+async function sendEmailNotification(user, notification) {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('Email credentials not configured, skipping email notification');
+    return;
+  }
+  
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: `New Regulation Update: ${notification.title}`,
+      text: `
+        ${notification.description}
+        
+        Authority: ${notification.authority}
+        Priority: ${notification.priority}
+        Type: ${notification.type}
+        
+        View in dashboard: https://idmeta.onrender.com
+      `
+    };
+    
+    await transporter.sendMail(mailOptions);
+    console.log(`Email sent to ${user.email} for notification: ${notification.title}`);
+  } catch (error) {
+    console.error('Failed to send email:', error);
+  }
+}
 
 // JSON file-based user storage (no native modules needed)
 const USERS_FILE = path.join(__dirname, 'users.json');
@@ -335,6 +376,16 @@ async function checkAllSources() {
   saveData(data);
   console.log(`Update check complete. ${newNotifications.length} new notifications.`);
   
+  // Send email notifications to all users for new updates
+  if (newNotifications.length > 0) {
+    const users = loadUsers();
+    for (const notification of newNotifications) {
+      for (const user of users) {
+        await sendEmailNotification(user, notification);
+      }
+    }
+  }
+  
   return {
     lastUpdate: data.lastUpdate,
     newNotifications: newNotifications.length,
@@ -541,8 +592,8 @@ app.post('/api/auth/change-password', authenticateToken, async (req, res) => {
 
 // ==================== NOTIFICATION API ROUTES ====================
 
-// Get all notifications
-app.get('/api/notifications', (req, res) => {
+// Get all notifications (requires authentication)
+app.get('/api/notifications', authenticateToken, (req, res) => {
   const data = loadData();
   res.json({
     success: true,
@@ -552,7 +603,7 @@ app.get('/api/notifications', (req, res) => {
 });
 
 // Get update status
-app.get('/api/status', (req, res) => {
+app.get('/api/status', authenticateToken, (req, res) => {
   const data = loadData();
   res.json({
     success: true,
@@ -564,7 +615,7 @@ app.get('/api/status', (req, res) => {
 });
 
 // Force check for updates
-app.post('/api/check-updates', async (req, res) => {
+app.post('/api/check-updates', authenticateToken, async (req, res) => {
   try {
     const result = await checkAllSources();
     res.json({
@@ -580,7 +631,7 @@ app.post('/api/check-updates', async (req, res) => {
 });
 
 // Mark notification as read
-app.post('/api/notifications/:id/read', (req, res) => {
+app.post('/api/notifications/:id/read', authenticateToken, (req, res) => {
   const data = loadData();
   const notif = data.notifications.find(n => n.id === req.params.id);
   if (notif) {
@@ -593,7 +644,7 @@ app.post('/api/notifications/:id/read', (req, res) => {
 });
 
 // Mark all as read
-app.post('/api/notifications/mark-all-read', (req, res) => {
+app.post('/api/notifications/mark-all-read', authenticateToken, (req, res) => {
   const data = loadData();
   data.notifications.forEach(n => n.read = true);
   saveData(data);
