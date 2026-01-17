@@ -588,10 +588,14 @@ async function checkAllSources() {
   // Send email notifications to all users for new updates
   if (newNotifications.length > 0) {
     const users = loadUsers();
-    for (const notification of newNotifications) {
-      for (const user of users) {
-        await sendEmailNotification(user, notification);
+    if (Array.isArray(users) && users.length > 0) {
+      for (const notification of newNotifications) {
+        for (const user of users) {
+          await sendEmailNotification(user, notification);
+        }
       }
+    } else {
+      console.log('No users found for email notifications');
     }
   }
   
