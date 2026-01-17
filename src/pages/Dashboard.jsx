@@ -121,11 +121,6 @@ export function Dashboard() {
   const fetchNotifications = async () => {
     try {
       const response = await fetch('/api/notifications');
-      if (response.status === 401) {
-        // Not authenticated, redirect to login
-        window.location.href = '/login';
-        return;
-      }
       const data = await response.json();
       if (data.success && data.notifications && data.notifications.length > 0) {
         setNotifications(data.notifications);
@@ -133,7 +128,7 @@ export function Dashboard() {
         return;
       }
     } catch (error) {
-      console.log('API not available, using default notifications');
+      console.log('Error fetching notifications:', error);
     }
     // Fallback to default notifications
     setNotifications(defaultNotifications);
@@ -822,16 +817,12 @@ export function Dashboard() {
                   setIsCheckingUpdates(true);
                   try {
                     const response = await fetch('/api/check-updates', { method: 'POST' });
-                    if (response.status === 401) {
-                      window.location.href = '/login';
-                      return;
-                    }
                     const data = await response.json();
                     console.log('Update check result:', data);
                     await fetchNotifications();
                     alert(`Update check complete! ${data.newNotifications || 0} new notifications found.`);
                   } catch (e) {
-                    console.log('Backend not available, refreshing local notifications');
+                    console.log('Error checking updates:', e);
                     // Refresh with default notifications
                     setNotifications(defaultNotifications);
                     setNotificationCount(defaultNotifications.filter(n => !n.read).length);

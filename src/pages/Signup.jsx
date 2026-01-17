@@ -53,14 +53,7 @@ export function Signup() {
         setError(data.error || 'Registration failed. Please try again.');
       }
     } catch (error) {
-      // Fallback to demo mode if API not available
-      localStorage.setItem('user', JSON.stringify({
-        email: formData.email,
-        firstName,
-        lastName,
-        company: formData.company
-      }));
-      navigate('/dashboard');
+      setError('Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

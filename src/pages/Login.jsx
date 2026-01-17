@@ -36,13 +36,7 @@ export function Login() {
         setError(data.error || 'Login failed. Please try again.');
       }
     } catch (error) {
-      // Fallback to demo login if API not available
-      if (email === demoCredentials.email && password === demoCredentials.password) {
-        localStorage.setItem('user', JSON.stringify({ email, firstName: 'Demo', lastName: 'User' }));
-        navigate('/dashboard');
-      } else {
-        setError('Login failed. Please check your credentials.');
-      }
+      setError('Login failed. Please check your credentials and try again.');
     } finally {
       setIsLoading(false);
     }

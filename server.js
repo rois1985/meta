@@ -46,19 +46,36 @@ async function sendEmailNotification(user, notification) {
   }
   
   try {
+    let emailText = `${notification.description}\n\n`;
+    
+    // Add compliance requirements if available
+    if (notification.requirements && notification.requirements.length > 0) {
+      emailText += "COMPLIANCE REQUIREMENTS:\n";
+      notification.requirements.slice(0, 3).forEach((req, i) => {
+        emailText += `${i + 1}. ${req}\n`;
+      });
+      emailText += "\n";
+    }
+    
+    // Add detected changes if available
+    if (notification.changes && notification.changes.length > 0) {
+      emailText += "KEY CHANGES:\n";
+      notification.changes.forEach((change, i) => {
+        emailText += `${i + 1}. ${change}\n`;
+      });
+      emailText += "\n";
+    }
+    
+    emailText += `Authority: ${notification.authority}\n`;
+    emailText += `Priority: ${notification.priority}\n`;
+    emailText += `Category: ${notification.category}\n\n`;
+    emailText += `View full details in dashboard: https://idmeta.onrender.com`;
+    
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: user.email,
       subject: `New Regulation Update: ${notification.title}`,
-      text: `
-        ${notification.description}
-        
-        Authority: ${notification.authority}
-        Priority: ${notification.priority}
-        Type: ${notification.type}
-        
-        View in dashboard: https://idmeta.onrender.com
-      `
+      text: emailText
     };
     
     await transporter.sendMail(mailOptions);
@@ -242,7 +259,7 @@ const REGULATION_SOURCES = [
   {
     id: 'fda',
     name: 'FDA',
-    url: 'https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds',
+    url: 'https://www.fda.gov/news-events/rss-feeds',
     category: 'Healthcare'
   },
   {
@@ -304,12 +321,34 @@ async function scrapeSource(source) {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       },
-      timeout: 10000
+      timeout: 15000
     });
     
     const $ = cheerio.load(response.data);
     const pageTitle = $('title').text();
     const lastModified = response.headers['last-modified'] || new Date().toISOString();
+    
+    // Extract regulation content based on source
+    let regulationContent = '';
+    let complianceRequirements = [];
+    let changes = [];
+    
+    if (source.id === 'fda') {
+      // FDA specific extraction
+      regulationContent = extractFDAContent($);
+      complianceRequirements = extractFDARequirements($);
+      changes = extractFDAChanges($);
+    } else if (source.id === 'ftc') {
+      // FTC specific extraction
+      regulationContent = extractFTCContent($);
+      complianceRequirements = extractFTCRequirements($);
+      changes = extractFTCChanges($);
+    } else {
+      // Generic extraction
+      regulationContent = extractGenericContent($);
+      complianceRequirements = extractGenericRequirements($);
+      changes = extractGenericChanges($);
+    }
     
     return {
       source: source.id,
@@ -317,6 +356,9 @@ async function scrapeSource(source) {
       category: source.category,
       url: source.url,
       title: pageTitle,
+      content: regulationContent,
+      requirements: complianceRequirements,
+      changes: changes,
       lastChecked: new Date().toISOString(),
       lastModified: lastModified,
       status: 'success'
@@ -335,6 +377,162 @@ async function scrapeSource(source) {
   }
 }
 
+// FDA specific extraction functions
+function extractFDAContent($) {
+  const content = [];
+  
+  // Extract main content areas
+  $('.field--name-field-body, .field--name-body, .article-content, .main-content').each((i, elem) => {
+    const text = $(elem).text().trim();
+    if (text.length > 100) {
+      content.push(text.substring(0, 500) + '...');
+    }
+  });
+  
+  // Extract headings and descriptions
+  $('h1, h2, h3').each((i, elem) => {
+    const heading = $(elem).text().trim();
+    const nextPara = $(elem).next('p').text().trim();
+    if (heading && nextPara && heading.length < 200) {
+      content.push(`${heading}: ${nextPara.substring(0, 300)}`);
+    }
+  });
+  
+  return content.slice(0, 3).join('\n\n');
+}
+
+function extractFDARequirements($) {
+  const requirements = [];
+  
+  // Look for compliance-related text
+  const complianceKeywords = ['must', 'shall', 'required', 'compliance', 'regulation', 'guideline'];
+  
+  $('p, li').each((i, elem) => {
+    const text = $(elem).text().trim();
+    if (text.length > 50 && text.length < 300) {
+      const hasKeyword = complianceKeywords.some(keyword => 
+        text.toLowerCase().includes(keyword.toLowerCase())
+      );
+      if (hasKeyword) {
+        requirements.push(text);
+      }
+    }
+  });
+  
+  return requirements.slice(0, 5);
+}
+
+function extractFDAChanges($) {
+  const changes = [];
+  
+  // Look for update indicators
+  const updateKeywords = ['update', 'new', 'revised', 'changed', 'effective', 'implementation'];
+  
+  $('h2, h3, .update, .news-item, .press-release').each((i, elem) => {
+    const text = $(elem).text().trim();
+    const hasKeyword = updateKeywords.some(keyword => 
+      text.toLowerCase().includes(keyword.toLowerCase())
+    );
+    if (hasKeyword && text.length < 200) {
+      changes.push(text);
+    }
+  });
+  
+  return changes.slice(0, 3);
+}
+
+// FTC specific extraction functions
+function extractFTCContent($) {
+  const content = [];
+  
+  $('.field--name-field-body, .press-release-body, .article-content').each((i, elem) => {
+    const text = $(elem).text().trim();
+    if (text.length > 100) {
+      content.push(text.substring(0, 500) + '...');
+    }
+  });
+  
+  return content.slice(0, 2).join('\n\n');
+}
+
+function extractFTCRequirements($) {
+  const requirements = [];
+  const ftcKeywords = ['advertising', 'marketing', 'disclosure', 'endorsement', 'compliance'];
+  
+  $('p, li').each((i, elem) => {
+    const text = $(elem).text().trim();
+    if (text.length > 50 && text.length < 300) {
+      const hasKeyword = ftcKeywords.some(keyword => 
+        text.toLowerCase().includes(keyword.toLowerCase())
+      );
+      if (hasKeyword) {
+        requirements.push(text);
+      }
+    }
+  });
+  
+  return requirements.slice(0, 5);
+}
+
+function extractFTCChanges($) {
+  const changes = [];
+  
+  $('.news-item, .press-release, h2').each((i, elem) => {
+    const text = $(elem).text().trim();
+    if (text.includes('new') || text.includes('update') || text.includes('rule')) {
+      changes.push(text);
+    }
+  });
+  
+  return changes.slice(0, 3);
+}
+
+// Generic extraction functions
+function extractGenericContent($) {
+  const content = [];
+  
+  $('main, article, .content, .main-content').each((i, elem) => {
+    const text = $(elem).text().trim();
+    if (text.length > 100) {
+      content.push(text.substring(0, 500) + '...');
+    }
+  });
+  
+  return content.slice(0, 2).join('\n\n');
+}
+
+function extractGenericRequirements($) {
+  const requirements = [];
+  const keywords = ['required', 'must', 'shall', 'compliance'];
+  
+  $('p, li').each((i, elem) => {
+    const text = $(elem).text().trim();
+    if (text.length > 50 && text.length < 300) {
+      const hasKeyword = keywords.some(keyword => 
+        text.toLowerCase().includes(keyword.toLowerCase())
+      );
+      if (hasKeyword) {
+        requirements.push(text);
+      }
+    }
+  });
+  
+  return requirements.slice(0, 3);
+}
+
+function extractGenericChanges($) {
+  const changes = [];
+  
+  $('h2, h3, .update, .news').each((i, elem) => {
+    const text = $(elem).text().trim();
+    if (text.includes('new') || text.includes('update') || text.includes('change')) {
+      changes.push(text);
+    }
+  });
+  
+  return changes.slice(0, 2);
+}
+
 // Check all sources for updates
 async function checkAllSources() {
   console.log('Starting regulation update check...');
@@ -351,19 +549,30 @@ async function checkAllSources() {
     if (result.status === 'success') {
       if (!previousUpdate || previousUpdate.lastModified !== result.lastModified) {
         // New or updated content detected
+        const notificationTitle = result.changes.length > 0 
+          ? `${source.name}: ${result.changes[0]}`
+          : `${source.name} Policy Update Detected`;
+        
+        const notificationDescription = result.content 
+          ? result.content.substring(0, 300) + '...'
+          : `New updates detected from ${source.name}. Review for compliance impact.`;
+        
         newNotifications.push({
           id: `notif_${Date.now()}_${source.id}`,
           type: 'Law Change',
           priority: 'High',
-          title: `${source.name} Policy Update Detected`,
-          description: `New updates detected from ${source.name}. Review for compliance impact.`,
+          title: notificationTitle,
+          description: notificationDescription,
           timestamp: new Date().toISOString(),
           read: false,
           authority: source.name,
           category: source.category,
-          url: source.url
+          url: source.url,
+          content: result.content,
+          requirements: result.requirements,
+          changes: result.changes
         });
-        console.log(`New update detected from ${source.name}`);
+        console.log(`New update detected from ${source.name} with ${result.changes.length} changes`);
       }
     }
   }
