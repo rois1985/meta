@@ -10,7 +10,18 @@
       "role": "user",
       "createdAt": "2026-01-26T10:26:10.632Z",
       "lastLogin": null
+    },
+    {
+      "id": 2,
+      "email": "roispan1985222@gmail.com",
+      "password": "$2b$10$jRm5hNlmn.EJ/zlgADjR.e99Pr9p.PJXmBxVVfmaB9vtxZSWFt.Ne",
+      "firstName": "Rodosthenis",
+      "lastName": "Panayiotou",
+      "company": "nini ltd",
+      "role": "user",
+      "createdAt": "2026-01-26T12:29:35.440Z",
+      "lastLogin": null
     }
   ],
-  "nextId": 2
+  "nextId": 3
 }

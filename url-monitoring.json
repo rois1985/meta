@@ -1,0 +1,811 @@
+{
+  "monitoredUrls": [
+    {
+      "id": "url_1769425145669_lzqyqtrdq",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "name": "new",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "scanFrequency": 86400000,
+      "complianceRules": [],
+      "priority": "high",
+      "status": "active",
+      "createdAt": "2026-01-26T10:59:05.669Z",
+      "lastScan": "2026-01-26T12:24:21.564Z",
+      "currentScore": null,
+      "violationCount": 0,
+      "scanCount": 6
+    }
+  ],
+  "scanHistory": [
+    {
+      "id": "scan_1769430261564_url_1769425145669_lzqyqtrdq",
+      "urlId": "url_1769425145669_lzqyqtrdq",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T12:24:21.564Z",
+      "duration": 39,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769430254872_url_1769425145669_lzqyqtrdq",
+      "urlId": "url_1769425145669_lzqyqtrdq",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T12:24:14.872Z",
+      "duration": 49,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769430253569_url_1769425145669_lzqyqtrdq",
+      "urlId": "url_1769425145669_lzqyqtrdq",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T12:24:13.569Z",
+      "duration": 560,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769429941379_url_1769425145669_lzqyqtrdq",
+      "urlId": "url_1769425145669_lzqyqtrdq",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T12:19:01.380Z",
+      "duration": 64,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769425152576_url_1769425145669_lzqyqtrdq",
+      "urlId": "url_1769425145669_lzqyqtrdq",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:59:12.576Z",
+      "duration": 79,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769425151557_url_1769425145669_lzqyqtrdq",
+      "urlId": "url_1769425145669_lzqyqtrdq",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:59:11.557Z",
+      "duration": 64,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424709061_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:51:49.061Z",
+      "duration": 39,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424708668_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:51:48.668Z",
+      "duration": 46,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424708441_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:51:48.441Z",
+      "duration": 36,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424707833_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:51:47.833Z",
+      "duration": 35,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424706810_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:51:46.810Z",
+      "duration": 68,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424473769_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:53.769Z",
+      "duration": 48,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424472867_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:52.867Z",
+      "duration": 42,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424472046_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:52.046Z",
+      "duration": 44,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424468382_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:48.382Z",
+      "duration": 36,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424467457_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:47.457Z",
+      "duration": 47,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424466377_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:46.377Z",
+      "duration": 47,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424466042_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:46.042Z",
+      "duration": 63,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424465843_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:45.843Z",
+      "duration": 50,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424465647_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:45.647Z",
+      "duration": 45,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424465458_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:45.458Z",
+      "duration": 50,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424465256_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:45.256Z",
+      "duration": 39,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424464501_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:44.501Z",
+      "duration": 83,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424463631_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:43.631Z",
+      "duration": 36,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424462769_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:42.769Z",
+      "duration": 39,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424461992_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:47:41.992Z",
+      "duration": 45,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424278496_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:44:38.496Z",
+      "duration": 36,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424277704_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:44:37.704Z",
+      "duration": 60,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424276994_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:44:36.994Z",
+      "duration": 47,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424276059_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:44:36.059Z",
+      "duration": 55,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424275137_url_1769424273564_vzpaxj6vs",
+      "urlId": "url_1769424273564_vzpaxj6vs",
+      "url": "https://www.forex.com/en-uk/lp/forex/",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:44:35.137Z",
+      "duration": 62,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424214962_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:43:34.962Z",
+      "duration": 47,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424214012_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:43:34.012Z",
+      "duration": 55,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769424212757_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "platform": {
+        "id": "twitter",
+        "name": "Twitter/X"
+      },
+      "timestamp": "2026-01-26T10:43:32.757Z",
+      "duration": 62,
+      "status": "blocked",
+      "error": "Website returned status 403 - access may be restricted",
+      "overallScore": null,
+      "violations": [],
+      "warnings": [
+        {
+          "title": "Access Restricted",
+          "description": "The website blocked our scan request (HTTP 403). This is common for sites with bot protection."
+        }
+      ]
+    },
+    {
+      "id": "scan_1769423947937_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "timestamp": "2026-01-26T10:39:07.937Z",
+      "duration": 49,
+      "status": "error",
+      "error": "Request failed with status code 403",
+      "overallScore": 0,
+      "violations": [],
+      "warnings": []
+    },
+    {
+      "id": "scan_1769423947307_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "timestamp": "2026-01-26T10:39:07.307Z",
+      "duration": 45,
+      "status": "error",
+      "error": "Request failed with status code 403",
+      "overallScore": 0,
+      "violations": [],
+      "warnings": []
+    },
+    {
+      "id": "scan_1769423946584_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "timestamp": "2026-01-26T10:39:06.584Z",
+      "duration": 82,
+      "status": "error",
+      "error": "Request failed with status code 403",
+      "overallScore": 0,
+      "violations": [],
+      "warnings": []
+    },
+    {
+      "id": "scan_1769423816649_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "timestamp": "2026-01-26T10:36:56.649Z",
+      "duration": 45,
+      "status": "error",
+      "error": "Request failed with status code 403",
+      "overallScore": 0,
+      "violations": [],
+      "warnings": []
+    },
+    {
+      "id": "scan_1769423807521_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "timestamp": "2026-01-26T10:36:47.521Z",
+      "duration": 490,
+      "status": "error",
+      "error": "Request failed with status code 403",
+      "overallScore": 0,
+      "violations": [],
+      "warnings": []
+    },
+    {
+      "id": "scan_1769423798397_url_1769423792345_533udnrr9",
+      "urlId": "url_1769423792345_533udnrr9",
+      "url": "https://www.forex.com/en-uk/lp/forex/?cid=0010104828&gclid=23b0853f2a401373827eec4869c423be&gclsrc=3p.ds&msclkid=23b0853f2a401373827eec4869c423be",
+      "timestamp": "2026-01-26T10:36:38.397Z",
+      "duration": 178,
+      "status": "error",
+      "error": "Request failed with status code 403",
+      "overallScore": 0,
+      "violations": [],
+      "warnings": []
+    }
+  ],
+  "lastScan": null
+}
