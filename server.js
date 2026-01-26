@@ -864,6 +864,802 @@ app.post('/api/notifications/mark-all-read', authenticateToken, (req, res) => {
   res.json({ success: true });
 });
 
+// ==================== URL MONITORING API ROUTES ====================
+
+// URL Monitoring data storage
+const URL_MONITORING_FILE = path.join(__dirname, 'url-monitoring.json');
+
+function loadUrlMonitoringData() {
+  try {
+    if (fs.existsSync(URL_MONITORING_FILE)) {
+      return JSON.parse(fs.readFileSync(URL_MONITORING_FILE, 'utf8'));
+    }
+  } catch (error) {
+    console.error('Error loading URL monitoring data:', error);
+  }
+  return { monitoredUrls: [], scanHistory: [], lastScan: null };
+}
+
+function saveUrlMonitoringData(data) {
+  try {
+    fs.writeFileSync(URL_MONITORING_FILE, JSON.stringify(data, null, 2));
+  } catch (error) {
+    console.error('Error saving URL monitoring data:', error);
+  }
+}
+
+// Get all monitored URLs
+app.get('/api/url-monitoring/urls', authenticateToken, (req, res) => {
+  const data = loadUrlMonitoringData();
+  res.json({
+    success: true,
+    urls: data.monitoredUrls,
+    count: data.monitoredUrls.length
+  });
+});
+
+// Add URL to monitoring
+app.post('/api/url-monitoring/urls', authenticateToken, (req, res) => {
+  try {
+    const { url, name, scanFrequency, complianceRules, priority } = req.body;
+    
+    if (!url) {
+      return res.status(400).json({ success: false, error: 'URL is required' });
+    }
+    
+    const data = loadUrlMonitoringData();
+    
+    // Check if URL already exists
+    if (data.monitoredUrls.find(u => u.url === url)) {
+      return res.status(400).json({ success: false, error: 'URL is already being monitored' });
+    }
+    
+    const newUrl = {
+      id: `url_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      url,
+      name: name || new URL(url).hostname,
+      platform: detectPlatform(url),
+      scanFrequency: scanFrequency || 3600000, // 1 hour default
+      complianceRules: complianceRules || [],
+      priority: priority || 'medium',
+      status: 'active',
+      createdAt: new Date().toISOString(),
+      lastScan: null,
+      currentScore: null,
+      violationCount: 0,
+      scanCount: 0
+    };
+    
+    data.monitoredUrls.push(newUrl);
+    saveUrlMonitoringData(data);
+    
+    res.json({ success: true, url: newUrl });
+  } catch (error) {
+    console.error('Error adding URL to monitoring:', error);
+    res.status(500).json({ success: false, error: 'Failed to add URL' });
+  }
+});
+
+// Remove URL from monitoring
+app.delete('/api/url-monitoring/urls/:id', authenticateToken, (req, res) => {
+  const data = loadUrlMonitoringData();
+  const index = data.monitoredUrls.findIndex(u => u.id === req.params.id);
+  
+  if (index === -1) {
+    return res.status(404).json({ success: false, error: 'URL not found' });
+  }
+  
+  data.monitoredUrls.splice(index, 1);
+  saveUrlMonitoringData(data);
+  
+  res.json({ success: true });
+});
+
+// Scan a specific URL
+app.post('/api/url-monitoring/scan/:id', authenticateToken, async (req, res) => {
+  try {
+    const data = loadUrlMonitoringData();
+    const urlConfig = data.monitoredUrls.find(u => u.id === req.params.id);
+    
+    if (!urlConfig) {
+      return res.status(404).json({ success: false, error: 'URL not found' });
+    }
+    
+    // Perform scan
+    const scanResult = await performUrlScan(urlConfig);
+    
+    // Update URL config
+    urlConfig.lastScan = scanResult.timestamp;
+    urlConfig.currentScore = scanResult.overallScore;
+    urlConfig.scanCount++;
+    if (scanResult.violations && scanResult.violations.length > 0) {
+      urlConfig.violationCount += scanResult.violations.length;
+    }
+    
+    // Add to scan history
+    data.scanHistory.unshift(scanResult);
+    if (data.scanHistory.length > 100) {
+      data.scanHistory = data.scanHistory.slice(0, 100);
+    }
+    
+    saveUrlMonitoringData(data);
+    
+    res.json({ success: true, result: scanResult });
+  } catch (error) {
+    console.error('Error scanning URL:', error);
+    res.status(500).json({ success: false, error: 'Scan failed' });
+  }
+});
+
+// Get scan history
+app.get('/api/url-monitoring/history', authenticateToken, (req, res) => {
+  const data = loadUrlMonitoringData();
+  const limit = parseInt(req.query.limit) || 20;
+  const urlId = req.query.urlId;
+  
+  let history = data.scanHistory;
+  if (urlId) {
+    history = history.filter(s => s.urlId === urlId);
+  }
+  
+  res.json({
+    success: true,
+    history: history.slice(0, limit),
+    total: history.length
+  });
+});
+
+// Get monitoring statistics
+app.get('/api/url-monitoring/stats', authenticateToken, (req, res) => {
+  const data = loadUrlMonitoringData();
+  const urls = data.monitoredUrls;
+  
+  const stats = {
+    totalUrls: urls.length,
+    activeUrls: urls.filter(u => u.status === 'active').length,
+    totalScans: data.scanHistory.length,
+    averageScore: urls.length > 0 
+      ? Math.round(urls.reduce((sum, u) => sum + (u.currentScore || 0), 0) / urls.length)
+      : 0,
+    urlsWithViolations: urls.filter(u => u.violationCount > 0).length,
+    platformBreakdown: getPlatformBreakdown(urls),
+    complianceDistribution: getComplianceDistribution(urls)
+  };
+  
+  res.json({ success: true, stats });
+});
+
+// Scan all monitored URLs
+app.post('/api/url-monitoring/scan-all', authenticateToken, async (req, res) => {
+  try {
+    const data = loadUrlMonitoringData();
+    const activeUrls = data.monitoredUrls.filter(u => u.status === 'active');
+    const results = [];
+    
+    for (const urlConfig of activeUrls) {
+      try {
+        const scanResult = await performUrlScan(urlConfig);
+        urlConfig.lastScan = scanResult.timestamp;
+        urlConfig.currentScore = scanResult.overallScore;
+        urlConfig.scanCount++;
+        if (scanResult.violations && scanResult.violations.length > 0) {
+          urlConfig.violationCount += scanResult.violations.length;
+        }
+        data.scanHistory.unshift(scanResult);
+        results.push(scanResult);
+      } catch (error) {
+        results.push({ urlId: urlConfig.id, status: 'error', error: error.message });
+      }
+    }
+    
+    // Trim history
+    if (data.scanHistory.length > 100) {
+      data.scanHistory = data.scanHistory.slice(0, 100);
+    }
+    
+    saveUrlMonitoringData(data);
+    
+    res.json({ success: true, results, scannedCount: results.length });
+  } catch (error) {
+    console.error('Error scanning all URLs:', error);
+    res.status(500).json({ success: false, error: 'Bulk scan failed' });
+  }
+});
+
+// Helper function to detect platform from URL
+function detectPlatform(url) {
+  const platforms = {
+    facebook: { patterns: [/facebook\.com/, /fb\.com/], name: 'Facebook' },
+    instagram: { patterns: [/instagram\.com/], name: 'Instagram' },
+    twitter: { patterns: [/twitter\.com/, /x\.com/], name: 'Twitter/X' },
+    linkedin: { patterns: [/linkedin\.com/], name: 'LinkedIn' },
+    youtube: { patterns: [/youtube\.com/, /youtu\.be/], name: 'YouTube' },
+    tiktok: { patterns: [/tiktok\.com/], name: 'TikTok' }
+  };
+  
+  for (const [id, platform] of Object.entries(platforms)) {
+    for (const pattern of platform.patterns) {
+      if (pattern.test(url)) {
+        return { id, name: platform.name };
+      }
+    }
+  }
+  
+  return { id: 'website', name: 'Website' };
+}
+
+// Helper function to perform URL scan
+async function performUrlScan(urlConfig) {
+  const scanStartTime = Date.now();
+  
+  try {
+    // Attempt to fetch the URL
+    const response = await axios.get(urlConfig.url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      },
+      timeout: 15000
+    });
+    
+    const $ = cheerio.load(response.data);
+    
+    // Analyze content
+    const contentAnalysis = {
+      pageTitle: $('title').text().trim(),
+      metaDescription: $('meta[name="description"]').attr('content') || '',
+      hasRiskWarning: checkForRiskWarnings($),
+      hasDisclaimer: checkForDisclaimers($),
+      hasCTA: checkForCTAs($),
+      textContent: extractMainText($),
+      imageCount: $('img').length,
+      linkCount: $('a').length
+    };
+    
+    // Check compliance
+    const complianceResult = analyzeCompliance(contentAnalysis, urlConfig);
+    
+    return {
+      id: `scan_${Date.now()}_${urlConfig.id}`,
+      urlId: urlConfig.id,
+      url: urlConfig.url,
+      platform: urlConfig.platform,
+      timestamp: new Date().toISOString(),
+      duration: Date.now() - scanStartTime,
+      status: 'completed',
+      contentAnalysis,
+      overallScore: complianceResult.score,
+      violations: complianceResult.violations,
+      warnings: complianceResult.warnings,
+      recommendations: complianceResult.recommendations
+    };
+    
+  } catch (error) {
+    return {
+      id: `scan_${Date.now()}_${urlConfig.id}`,
+      urlId: urlConfig.id,
+      url: urlConfig.url,
+      timestamp: new Date().toISOString(),
+      duration: Date.now() - scanStartTime,
+      status: 'error',
+      error: error.message,
+      overallScore: 0,
+      violations: [],
+      warnings: []
+    };
+  }
+}
+
+// Check for risk warnings in page content
+function checkForRiskWarnings($) {
+  const warningPatterns = [
+    /capital at risk/i,
+    /you may lose/i,
+    /risk of loss/i,
+    /past performance/i,
+    /not guaranteed/i
+  ];
+  
+  const pageText = $('body').text();
+  return warningPatterns.some(pattern => pattern.test(pageText));
+}
+
+// Check for disclaimers in page content
+function checkForDisclaimers($) {
+  const disclaimerPatterns = [
+    /terms and conditions/i,
+    /disclaimer/i,
+    /not financial advice/i,
+    /regulated by/i
+  ];
+  
+  const pageText = $('body').text();
+  return disclaimerPatterns.some(pattern => pattern.test(pageText));
+}
+
+// Check for CTAs in page content
+function checkForCTAs($) {
+  const ctaPatterns = [
+    /apply now/i,
+    /sign up/i,
+    /get started/i,
+    /learn more/i
+  ];
+  
+  const pageText = $('body').text();
+  return ctaPatterns.some(pattern => pattern.test(pageText));
+}
+
+// Extract main text content
+function extractMainText($) {
+  return $('main, article, .content, .main-content, body')
+    .first()
+    .text()
+    .trim()
+    .substring(0, 1000);
+}
+
+// Analyze compliance of content
+function analyzeCompliance(contentAnalysis, urlConfig) {
+  const result = {
+    score: 100,
+    violations: [],
+    warnings: [],
+    recommendations: []
+  };
+  
+  // Check for missing risk warnings
+  if (!contentAnalysis.hasRiskWarning) {
+    result.violations.push({
+      type: 'missing_risk_warning',
+      severity: 'high',
+      title: 'Missing Risk Warning',
+      description: 'Financial content should include appropriate risk warnings',
+      regulation: 'FCA COBS 4.5'
+    });
+    result.score -= 25;
+  }
+  
+  // Check for missing disclaimers
+  if (!contentAnalysis.hasDisclaimer) {
+    result.warnings.push({
+      type: 'missing_disclaimer',
+      severity: 'medium',
+      title: 'Missing Disclaimer',
+      description: 'Content should include appropriate disclaimers',
+      regulation: 'ASA CAP Code'
+    });
+    result.score -= 15;
+  }
+  
+  // Add recommendations
+  if (result.score < 100) {
+    result.recommendations.push({
+      priority: 'high',
+      title: 'Add Required Disclosures',
+      description: 'Ensure all required risk warnings and disclaimers are present'
+    });
+  }
+  
+  return result;
+}
+
+// Get platform breakdown
+function getPlatformBreakdown(urls) {
+  const breakdown = {};
+  for (const url of urls) {
+    const platformName = url.platform?.name || 'Unknown';
+    breakdown[platformName] = (breakdown[platformName] || 0) + 1;
+  }
+  return breakdown;
+}
+
+// Get compliance distribution
+function getComplianceDistribution(urls) {
+  const distribution = { compliant: 0, needs_review: 0, non_compliant: 0, not_scanned: 0 };
+  
+  for (const url of urls) {
+    if (!url.currentScore) {
+      distribution.not_scanned++;
+    } else if (url.currentScore >= 80 && url.violationCount === 0) {
+      distribution.compliant++;
+    } else if (url.currentScore >= 60) {
+      distribution.needs_review++;
+    } else {
+      distribution.non_compliant++;
+    }
+  }
+  
+  return distribution;
+}
+
+// ==================== OMNICHANNEL ANALYSIS API ROUTES ====================
+
+// Omnichannel analysis data storage
+const OMNICHANNEL_FILE = path.join(__dirname, 'omnichannel-analysis.json');
+
+function loadOmnichannelData() {
+  try {
+    if (fs.existsSync(OMNICHANNEL_FILE)) {
+      return JSON.parse(fs.readFileSync(OMNICHANNEL_FILE, 'utf8'));
+    }
+  } catch (error) {
+    console.error('Error loading omnichannel data:', error);
+  }
+  return { analyses: [], templates: [] };
+}
+
+function saveOmnichannelData(data) {
+  try {
+    fs.writeFileSync(OMNICHANNEL_FILE, JSON.stringify(data, null, 2));
+  } catch (error) {
+    console.error('Error saving omnichannel data:', error);
+  }
+}
+
+// Get supported media types
+app.get('/api/omnichannel/media-types', authenticateToken, (req, res) => {
+  const mediaTypes = {
+    text: { name: 'Text Content', extensions: ['.txt', '.doc', '.docx', '.pdf'], icon: 'FileText' },
+    image: { name: 'Image Content', extensions: ['.jpg', '.jpeg', '.png', '.gif', '.webp'], icon: 'Image' },
+    video: { name: 'Video Content', extensions: ['.mp4', '.mov', '.avi', '.webm'], icon: 'Video' },
+    audio: { name: 'Audio/Voice-Over', extensions: ['.mp3', '.wav', '.aac', '.ogg'], icon: 'Volume2' }
+  };
+  
+  res.json({ success: true, mediaTypes });
+});
+
+// Get available channels
+app.get('/api/omnichannel/channels', authenticateToken, (req, res) => {
+  const channels = {
+    website: { name: 'Website', regulations: ['ASA UK', 'FCA UK', 'CMA UK'] },
+    social_media: { name: 'Social Media', regulations: ['ASA UK', 'Meta', 'Google', 'TikTok'] },
+    tv_broadcast: { name: 'TV Broadcast', regulations: ['Ofcom UK', 'ASA UK', 'BCAP'] },
+    radio_broadcast: { name: 'Radio Broadcast', regulations: ['Ofcom UK', 'ASA UK', 'RACC'] },
+    streaming: { name: 'Streaming/VOD', regulations: ['Ofcom UK', 'ASA UK'] },
+    podcast: { name: 'Podcast', regulations: ['Ofcom UK', 'ASA UK'] },
+    print: { name: 'Print Media', regulations: ['ASA UK', 'CAP Code'] },
+    email: { name: 'Email Marketing', regulations: ['ASA UK', 'ICO UK', 'GDPR'] }
+  };
+  
+  res.json({ success: true, channels });
+});
+
+// Get Ofcom Broadcasting Code sections
+app.get('/api/omnichannel/ofcom-sections', authenticateToken, (req, res) => {
+  const ofcomSections = {
+    section1: { title: 'Protecting the Under-Eighteens', description: 'Content scheduling and age-appropriate warnings' },
+    section2: { title: 'Harm and Offence', description: 'Content must not cause harm or offence' },
+    section3: { title: 'Crime, Disorder, Hatred and Abuse', description: 'Content must not incite crime or promote hatred' },
+    section4: { title: 'Religion', description: 'Religious content handled responsibly' },
+    section5: { title: 'Due Impartiality and Due Accuracy', description: 'News accuracy and political impartiality' },
+    section9: { title: 'Commercial References in TV', description: 'Product placement and editorial independence' },
+    section10: { title: 'Commercial Communications in Radio', description: 'Commercial content distinction and sponsorship' }
+  };
+  
+  res.json({ success: true, ofcomSections });
+});
+
+// Get BCAP Code categories
+app.get('/api/omnichannel/bcap-categories', authenticateToken, (req, res) => {
+  const bcapCategories = {
+    general: { title: 'General Rules', description: 'Legal, decent, honest and truthful advertising' },
+    financial: { title: 'Financial Advertising', description: 'Fair, clear financial promotions with risk warnings' },
+    children: { title: 'Children', description: 'Protection of children in advertising' },
+    health: { title: 'Health and Beauty', description: 'Substantiated health claims' }
+  };
+  
+  res.json({ success: true, bcapCategories });
+});
+
+// Analyze content (omnichannel)
+app.post('/api/omnichannel/analyze', authenticateToken, async (req, res) => {
+  try {
+    const { content, mediaType, channel, options } = req.body;
+    
+    if (!content) {
+      return res.status(400).json({ success: false, error: 'Content is required' });
+    }
+    
+    const analysis = await performOmnichannelAnalysis(content, mediaType || 'text', channel || 'website', options || {});
+    
+    // Save analysis
+    const data = loadOmnichannelData();
+    data.analyses.unshift(analysis);
+    if (data.analyses.length > 50) {
+      data.analyses = data.analyses.slice(0, 50);
+    }
+    saveOmnichannelData(data);
+    
+    res.json({ success: true, analysis });
+  } catch (error) {
+    console.error('Error performing omnichannel analysis:', error);
+    res.status(500).json({ success: false, error: 'Analysis failed' });
+  }
+});
+
+// Get analysis history
+app.get('/api/omnichannel/history', authenticateToken, (req, res) => {
+  const data = loadOmnichannelData();
+  const limit = parseInt(req.query.limit) || 20;
+  
+  res.json({
+    success: true,
+    analyses: data.analyses.slice(0, limit),
+    total: data.analyses.length
+  });
+});
+
+// Perform omnichannel analysis
+async function performOmnichannelAnalysis(content, mediaType, channel, options) {
+  const analysis = {
+    id: `analysis_${Date.now()}`,
+    timestamp: new Date().toISOString(),
+    mediaType,
+    channel,
+    status: 'completed',
+    overallScore: 0,
+    results: {},
+    ofcomCompliance: null,
+    bcapCompliance: null,
+    violations: [],
+    warnings: [],
+    recommendations: []
+  };
+  
+  // Analyze based on media type
+  switch (mediaType) {
+    case 'text':
+      analysis.results.text = analyzeTextContent(content);
+      break;
+    case 'image':
+      analysis.results.image = analyzeImageContent(content);
+      break;
+    case 'video':
+      analysis.results.video = analyzeVideoContent(content, channel);
+      break;
+    case 'audio':
+      analysis.results.audio = analyzeAudioContent(content, channel);
+      break;
+  }
+  
+  // Check Ofcom compliance for broadcast channels
+  if (['tv_broadcast', 'radio_broadcast', 'streaming', 'podcast'].includes(channel)) {
+    analysis.ofcomCompliance = checkOfcomCompliance(mediaType, channel);
+    analysis.violations.push(...analysis.ofcomCompliance.violations);
+    analysis.warnings.push(...analysis.ofcomCompliance.warnings);
+  }
+  
+  // Check BCAP compliance for advertising
+  if (options.isAdvertising) {
+    analysis.bcapCompliance = checkBCAPCompliance(mediaType, options);
+    analysis.violations.push(...analysis.bcapCompliance.violations);
+    analysis.warnings.push(...analysis.bcapCompliance.warnings);
+  }
+  
+  // Calculate overall score
+  let totalScore = 0;
+  let count = 0;
+  
+  for (const result of Object.values(analysis.results)) {
+    if (result && result.score !== undefined) {
+      totalScore += result.score;
+      count++;
+    }
+  }
+  
+  if (analysis.ofcomCompliance) {
+    totalScore += analysis.ofcomCompliance.score;
+    count++;
+  }
+  
+  if (analysis.bcapCompliance) {
+    totalScore += analysis.bcapCompliance.score;
+    count++;
+  }
+  
+  analysis.overallScore = count > 0 ? Math.round(totalScore / count) : 0;
+  
+  // Generate recommendations
+  for (const violation of analysis.violations) {
+    analysis.recommendations.push({
+      priority: violation.severity === 'critical' ? 'urgent' : 'high',
+      title: `Address: ${violation.title}`,
+      description: violation.description
+    });
+  }
+  
+  return analysis;
+}
+
+// Text content analysis
+function analyzeTextContent(content) {
+  const text = typeof content === 'string' ? content : content.text || '';
+  const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
+  
+  const hasRiskWarning = /capital at risk|you may lose|past performance/i.test(text);
+  const hasDisclaimer = /terms and conditions|disclaimer|not financial advice/i.test(text);
+  const hasUnsubstantiatedClaims = /guaranteed|best in class|number one/i.test(text);
+  
+  let score = 100;
+  const issues = [];
+  
+  if (!hasRiskWarning) {
+    score -= 20;
+    issues.push({ type: 'missing_risk_warning', severity: 'high' });
+  }
+  
+  if (!hasDisclaimer) {
+    score -= 15;
+    issues.push({ type: 'missing_disclaimer', severity: 'medium' });
+  }
+  
+  if (hasUnsubstantiatedClaims) {
+    score -= 15;
+    issues.push({ type: 'unsubstantiated_claims', severity: 'medium' });
+  }
+  
+  return { type: 'text', wordCount, score, issues, hasRiskWarning, hasDisclaimer };
+}
+
+// Image content analysis
+function analyzeImageContent(content) {
+  let score = 100;
+  const issues = [];
+  
+  // Simulated image analysis
+  const hasAltText = Math.random() > 0.5;
+  const hasDisclaimer = Math.random() > 0.4;
+  
+  if (!hasAltText) {
+    score -= 5;
+    issues.push({ type: 'missing_alt_text', severity: 'low' });
+  }
+  
+  if (!hasDisclaimer) {
+    score -= 15;
+    issues.push({ type: 'missing_image_disclaimer', severity: 'medium' });
+  }
+  
+  return { type: 'image', score, issues, hasAltText, hasDisclaimer };
+}
+
+// Video content analysis
+function analyzeVideoContent(content, channel) {
+  let score = 100;
+  const issues = [];
+  
+  // Simulated video analysis
+  const hasSubtitles = Math.random() > 0.5;
+  const hasDisclaimer = Math.random() > 0.5;
+  const suitableForPreWatershed = Math.random() > 0.8;
+  
+  if (!hasSubtitles) {
+    score -= 15;
+    issues.push({ type: 'missing_subtitles', severity: 'medium', regulation: 'Ofcom Accessibility' });
+  }
+  
+  if (!hasDisclaimer) {
+    score -= 20;
+    issues.push({ type: 'missing_video_disclaimer', severity: 'high', regulation: 'BCAP Code' });
+  }
+  
+  if (!suitableForPreWatershed && channel === 'tv_broadcast') {
+    score -= 25;
+    issues.push({ type: 'watershed_restriction', severity: 'high', regulation: 'Ofcom Section 1' });
+  }
+  
+  return { type: 'video', score, issues, hasSubtitles, hasDisclaimer, suitableForPreWatershed };
+}
+
+// Audio content analysis
+function analyzeAudioContent(content, channel) {
+  let score = 100;
+  const issues = [];
+  
+  // Simulated audio analysis
+  const hasTranscript = Math.random() > 0.5;
+  const disclaimerClear = Math.random() > 0.6;
+  const meetsRACCStandards = Math.random() > 0.7;
+  
+  if (!hasTranscript) {
+    score -= 5;
+    issues.push({ type: 'missing_transcript', severity: 'low', regulation: 'Accessibility' });
+  }
+  
+  if (!disclaimerClear) {
+    score -= 20;
+    issues.push({ type: 'unclear_disclaimer', severity: 'high', regulation: 'RACC/Ofcom' });
+  }
+  
+  if (!meetsRACCStandards && channel === 'radio_broadcast') {
+    score -= 25;
+    issues.push({ type: 'racc_non_compliance', severity: 'high', regulation: 'RACC Guidelines' });
+  }
+  
+  return { type: 'audio', score, issues, hasTranscript, disclaimerClear, meetsRACCStandards };
+}
+
+// Check Ofcom compliance
+function checkOfcomCompliance(mediaType, channel) {
+  const compliance = {
+    authority: 'Ofcom UK',
+    score: 100,
+    violations: [],
+    warnings: []
+  };
+  
+  // Simulated Ofcom checks
+  if (Math.random() > 0.9) {
+    compliance.violations.push({
+      type: 'under18_protection',
+      severity: 'high',
+      title: 'Under-18 Protection Issue',
+      description: 'Content may not be appropriately scheduled',
+      regulation: 'Ofcom Section 1'
+    });
+    compliance.score -= 20;
+  }
+  
+  if (mediaType === 'video' && Math.random() > 0.85) {
+    compliance.warnings.push({
+      type: 'product_placement',
+      severity: 'medium',
+      title: 'Product Placement Disclosure',
+      description: 'Product placement may require clearer identification',
+      regulation: 'Ofcom Section 9'
+    });
+    compliance.score -= 10;
+  }
+  
+  if (mediaType === 'audio' && Math.random() > 0.85) {
+    compliance.warnings.push({
+      type: 'commercial_distinction',
+      severity: 'medium',
+      title: 'Commercial Content Distinction',
+      description: 'Commercial content may need clearer distinction',
+      regulation: 'Ofcom Section 10'
+    });
+    compliance.score -= 10;
+  }
+  
+  return compliance;
+}
+
+// Check BCAP compliance
+function checkBCAPCompliance(mediaType, options) {
+  const compliance = {
+    authority: 'BCAP',
+    score: 100,
+    violations: [],
+    warnings: []
+  };
+  
+  // Simulated BCAP checks
+  if (options.isFinancial && Math.random() > 0.7) {
+    compliance.violations.push({
+      type: 'financial_bcap',
+      severity: 'high',
+      title: 'Financial Advertising Compliance',
+      description: 'Financial content requires enhanced compliance measures',
+      regulation: 'BCAP Financial Section'
+    });
+    compliance.score -= 20;
+  }
+  
+  if (Math.random() > 0.95) {
+    compliance.violations.push({
+      type: 'children_bcap',
+      severity: 'critical',
+      title: 'Children Protection Issue',
+      description: 'Content may not be appropriate for children',
+      regulation: 'BCAP Children Section'
+    });
+    compliance.score -= 30;
+  }
+  
+  return compliance;
+}
+
 // Schedule automatic checks every 6 hours
 cron.schedule('0 */6 * * *', () => {
   console.log('Running scheduled regulation check...');
