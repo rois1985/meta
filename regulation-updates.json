@@ -1,6 +1,72 @@
 {
-  "lastUpdate": "2026-01-17T16:06:41.407Z",
+  "lastUpdate": "2026-01-26T10:25:41.290Z",
   "notifications": [
+    {
+      "id": "notif_1769423139294_ftc",
+      "type": "Law Change",
+      "priority": "High",
+      "title": "FTC Policy Update Detected",
+      "description": "Enforcement\n\nWe enforce federal competition and consumer protection laws that prevent anticompetitive, deceptive, and unfair business practices.\n\nView Enforcement...\n\nSearch or browse\nthe Legal Library\n\nFind legal resources and guidance to understand your business responsibilities and comply with th...",
+      "timestamp": "2026-01-26T10:25:39.294Z",
+      "read": false,
+      "authority": "FTC",
+      "category": "Advertising",
+      "url": "https://www.ftc.gov/news-events/news/press-releases",
+      "content": "Enforcement\n\nWe enforce federal competition and consumer protection laws that prevent anticompetitive, deceptive, and unfair business practices.\n\nView Enforcement...\n\nSearch or browse\nthe Legal Library\n\nFind legal resources and guidance to understand your business responsibilities and comply with the law.\n\nBrowse legal resources\n\nSearch small Search...",
+      "requirements": [],
+      "changes": []
+    },
+    {
+      "id": "notif_1769423139915_fca_uk",
+      "type": "Law Change",
+      "priority": "High",
+      "title": "FCA UK: Latest news",
+      "description": "Home\n                          News\n                      \n        \n      \n      \n\n      \n        \n          \n                          \n                                         \t\t\t\t\t\tNews\n\t\t\t\n\n                                            \t\t\t\t\t\tLatest releases\n\t\t\t\n              \n                     ...",
+      "timestamp": "2026-01-26T10:25:39.915Z",
+      "read": false,
+      "authority": "FCA UK",
+      "category": "Financial",
+      "url": "https://www.fca.org.uk/news",
+      "content": "Home\n                          News\n                      \n        \n      \n      \n\n      \n        \n          \n                          \n                                         \t\t\t\t\t\tNews\n\t\t\t\n\n                                            \t\t\t\t\t\tLatest releases\n\t\t\t\n              \n                            \n                                            \n                  \n\n    I want to find...Search all newsBlogsNews storiesPress releasesSpeechesStatements\n\n                                      \n ...\n\nHome\n                          News\n                      \n        \n      \n      \n\n      \n        \n          \n                          \n                                         \t\t\t\t\t\tNews\n\t\t\t\n\n                                            \t\t\t\t\t\tLatest releases\n\t\t\t\n              \n                            \n                                            \n                  \n\n    I want to find...Search all newsBlogsNews storiesPress releasesSpeechesStatements\n\n                                      \n ...",
+      "requirements": [],
+      "changes": [
+        "Latest news"
+      ]
+    },
+    {
+      "id": "notif_1769423140714_google_ads",
+      "type": "Law Change",
+      "priority": "High",
+      "title": "Google Ads Policy Update Detected",
+      "description": "Google Ads policies\n  \n  \n    Google provides translated versions of the Advertising Policies Help Center, though they're not meant to change the content of the policies. The English version is the official language used to enforce Google Ads policies. To view this article in a different language, u...",
+      "timestamp": "2026-01-26T10:25:40.714Z",
+      "read": false,
+      "authority": "Google Ads",
+      "category": "Platform Policy",
+      "url": "https://support.google.com/adspolicy/answer/6008942",
+      "content": "Google Ads policies\n  \n  \n    Google provides translated versions of the Advertising Policies Help Center, though they're not meant to change the content of the policies. The English version is the official language used to enforce Google Ads policies. To view this article in a different language, use the language dropdown at the bottom of the page.\n  \n\n\n\n  \n  \n    Display & Video 360 users must comply with this Google Ads policy. Visit the Display & Video 360 help center for additional restrict...\n\nGoogle Ads policies\n  \n  \n    Google provides translated versions of the Advertising Policies Help Center, though they're not meant to change the content of the policies. The English version is the official language used to enforce Google Ads policies. To view this article in a different language, use the language dropdown at the bottom of the page.\n  \n\n\n\n  \n  \n    Display & Video 360 users must comply with this Google Ads policy. Visit the Display & Video 360 help center for additional restrict...",
+      "requirements": [
+        "Display & Video 360 users must comply with this Google Ads policy. Visit the Display & Video 360 help center for additional restrictions.",
+        "While most advertisers must be certified by Google, there may be limited circumstances where certification is not required.",
+        "We want consumers to have a good experience when they click on an ad, so ad destinations must offer unique value to users and be functional, useful, and easy to navigate."
+      ],
+      "changes": []
+    },
+    {
+      "id": "notif_1769423141290_meta_ads",
+      "type": "Law Change",
+      "priority": "High",
+      "title": "Meta Ads Policy Update Detected",
+      "description": "New updates detected from Meta Ads. Review for compliance impact.",
+      "timestamp": "2026-01-26T10:25:41.290Z",
+      "read": false,
+      "authority": "Meta Ads",
+      "category": "Platform Policy",
+      "url": "https://transparency.fb.com/policies/ad-standards/",
+      "content": "",
+      "requirements": [],
+      "changes": []
+    },
     {
       "id": "notif_1768665998907_ftc",
       "type": "Law Change",
@@ -55,8 +121,8 @@
       "source": "fda",
       "name": "FDA",
       "category": "Healthcare",
-      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds",
-      "lastChecked": "2026-01-17T16:06:37.404Z",
+      "url": "https://www.fda.gov/news-events/rss-feeds",
+      "lastChecked": "2026-01-26T10:25:37.868Z",
       "status": "error",
       "error": "Request failed with status code 404"
     },
@@ -66,8 +132,11 @@
       "category": "Advertising",
       "url": "https://www.ftc.gov/news-events/news/press-releases",
       "title": "Press Releases | Federal Trade Commission",
-      "lastChecked": "2026-01-17T16:06:38.907Z",
-      "lastModified": "Sat, 17 Jan 2026 16:04:25 GMT",
+      "content": "Enforcement\n\nWe enforce federal competition and consumer protection laws that prevent anticompetitive, deceptive, and unfair business practices.\n\nView Enforcement...\n\nSearch or browse\nthe Legal Library\n\nFind legal resources and guidance to understand your business responsibilities and comply with the law.\n\nBrowse legal resources\n\nSearch small Search...",
+      "requirements": [],
+      "changes": [],
+      "lastChecked": "2026-01-26T10:25:39.294Z",
+      "lastModified": "Mon, 26 Jan 2026 10:23:50 GMT",
       "status": "success"
     },
     {
@@ -76,8 +145,13 @@
       "category": "Financial",
       "url": "https://www.fca.org.uk/news",
       "title": "News | FCA",
-      "lastChecked": "2026-01-17T16:06:39.124Z",
-      "lastModified": "Sat, 17 Jan 2026 15:42:21 GMT",
+      "content": "Home\n                          News\n                      \n        \n      \n      \n\n      \n        \n          \n                          \n                                         \t\t\t\t\t\tNews\n\t\t\t\n\n                                            \t\t\t\t\t\tLatest releases\n\t\t\t\n              \n                            \n                                            \n                  \n\n    I want to find...Search all newsBlogsNews storiesPress releasesSpeechesStatements\n\n                                      \n ...\n\nHome\n                          News\n                      \n        \n      \n      \n\n      \n        \n          \n                          \n                                         \t\t\t\t\t\tNews\n\t\t\t\n\n                                            \t\t\t\t\t\tLatest releases\n\t\t\t\n              \n                            \n                                            \n                  \n\n    I want to find...Search all newsBlogsNews storiesPress releasesSpeechesStatements\n\n                                      \n ...",
+      "requirements": [],
+      "changes": [
+        "Latest news"
+      ],
+      "lastChecked": "2026-01-26T10:25:39.915Z",
+      "lastModified": "Mon, 26 Jan 2026 10:25:10 GMT",
       "status": "success"
     },
     {
@@ -86,8 +160,15 @@
       "category": "Platform Policy",
       "url": "https://support.google.com/adspolicy/answer/6008942",
       "title": "Google Ads policies - Advertising Policies Help",
-      "lastChecked": "2026-01-17T16:06:40.063Z",
-      "lastModified": "2026-01-17T16:06:40.063Z",
+      "content": "Google Ads policies\n  \n  \n    Google provides translated versions of the Advertising Policies Help Center, though they're not meant to change the content of the policies. The English version is the official language used to enforce Google Ads policies. To view this article in a different language, use the language dropdown at the bottom of the page.\n  \n\n\n\n  \n  \n    Display & Video 360 users must comply with this Google Ads policy. Visit the Display & Video 360 help center for additional restrict...\n\nGoogle Ads policies\n  \n  \n    Google provides translated versions of the Advertising Policies Help Center, though they're not meant to change the content of the policies. The English version is the official language used to enforce Google Ads policies. To view this article in a different language, use the language dropdown at the bottom of the page.\n  \n\n\n\n  \n  \n    Display & Video 360 users must comply with this Google Ads policy. Visit the Display & Video 360 help center for additional restrict...",
+      "requirements": [
+        "Display & Video 360 users must comply with this Google Ads policy. Visit the Display & Video 360 help center for additional restrictions.",
+        "While most advertisers must be certified by Google, there may be limited circumstances where certification is not required.",
+        "We want consumers to have a good experience when they click on an ad, so ad destinations must offer unique value to users and be functional, useful, and easy to navigate."
+      ],
+      "changes": [],
+      "lastChecked": "2026-01-26T10:25:40.714Z",
+      "lastModified": "2026-01-26T10:25:40.705Z",
       "status": "success"
     },
     {
@@ -96,8 +177,11 @@
       "category": "Platform Policy",
       "url": "https://transparency.fb.com/policies/ad-standards/",
       "title": "Introduction to the Advertising Standards | Transparency Center",
-      "lastChecked": "2026-01-17T16:06:41.406Z",
-      "lastModified": "2026-01-17T16:06:41.406Z",
+      "content": "",
+      "requirements": [],
+      "changes": [],
+      "lastChecked": "2026-01-26T10:25:41.290Z",
+      "lastModified": "2026-01-26T10:25:41.289Z",
       "status": "success"
     }
   ]

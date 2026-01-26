@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "roispan1985@gmail.com",
+      "password": "$2b$10$sF.GonhFUcsHUtqIK/u1nuimXHVeCWGUSWZ4yoipmBZHRYQGx2h6i",
+      "firstName": "Rodosthenis",
+      "lastName": "Panayiotou",
+      "company": "gfgfg",
+      "role": "user",
+      "createdAt": "2026-01-26T10:26:10.632Z",
+      "lastLogin": null
+    }
+  ],
+  "nextId": 2
+}
